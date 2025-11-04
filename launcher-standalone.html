@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LaunchIQ - Launcher</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+  <header class="border-bottom bg-white shadow-sm sticky-top">
+    <div class="d-flex justify-content-between align-items-center px-4 py-2 position-relative">
+      <div class="d-flex align-items-center">
+        <img src="images/RESUL-logo-bl.jpg" alt="Resulticks" height="50" />
+      </div>
+      <div class="position-absolute start-50 translate-middle-x text-center">
+        <span class="h4 mb-0">LaunchIQ</span>
+      </div>
+      <div class="d-flex align-items-center">
+        <span class="me-3 small">Version <strong>1.0.0</strong></span>
+        <img src="images/resul-prod-logo.png" alt="Product" height="50" />
+      </div>
+    </div>
+    <div class="px-4 py-1 small text-muted border-top">
+      <span id="machineInfo">Machine: Loading... | IP: Loading... | Loading...</span>
+    </div>
+  </header>
+
+  <main class="container mt-4">
+    <h1 class="visually-hidden">Launcher</h1>
+    <form id="launchForm">
+      <div class="row">
+        <div class="col-12 col-lg-4">
+          <div class="row mb-3">
+            <div class="col-12 d-flex align-items-center">
+              <label for="product" class="me-3 mb-0 w-25">Product</label>
+              <select id="product" class="form-select w-auto" style="min-width: 240px;">
+                <option>Resul</option>
+                <option>Marketing Star</option>
+                <option>Smart DX</option>
+                <option>Reacher</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12 d-flex align-items-center">
+              <label for="environment" class="me-3 mb-0 w-25">Environment</label>
+              <select id="environment" class="form-select w-auto" style="min-width: 240px;">
+                <option>Development</option>
+                <option>QA</option>
+                <option>RUN19</option>
+                <option>RUN</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12 d-flex align-items-center">
+              <label for="suite" class="me-3 mb-0 w-25">Test Suite</label>
+              <select id="suite" class="form-select w-auto" style="min-width: 240px;">
+                <option>Sample Test</option>
+                <option>Daily Checklist</option>
+                <option>Deployment Checklist</option>
+                <option>Smoke Checklist</option>
+                <option selected>Regression (Default)</option>
+                <option>Account Setup</option>
+                <option>Audience</option>
+                <option>Preferences</option>
+                <option>Custom Checklist</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+          <div class="row mb-3">
+            <div class="col-12 d-flex align-items-center">
+              <label for="url" class="me-3 mb-0 w-25">URL</label>
+              <input id="url" class="form-control w-auto" style="min-width: 240px;" placeholder="URL" readonly />
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12 d-flex align-items-center">
+              <label for="username" class="me-3 mb-0 w-25">User Name</label>
+              <input id="username" class="form-control w-auto" style="min-width: 240px;" placeholder="User Name" />
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12 d-flex align-items-center">
+              <label for="password" class="me-3 mb-0 w-25">Password</label>
+              <input id="password" type="password" class="form-control w-auto" style="min-width: 240px;" placeholder="Password" />
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+          <div class="row mb-3">
+            <div class="col-12 d-flex align-items-center">
+              <label for="runAt" class="me-3 mb-0 w-50">Run At</label>
+              <select id="runAt" class="form-select w-auto" style="min-width: 200px;">
+                <option selected>Local</option>
+                <option>Lambda</option>
+                <option>BrowserStack</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12 d-flex align-items-center">
+              <label class="me-3 mb-0 w-50">Update the Zephyr</label>
+              <div class="d-flex align-items-center gap-3">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="updateZephyr" id="updateZephyrNo" value="No" checked>
+                  <label class="form-check-label" for="updateZephyrNo">No</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="updateZephyr" id="updateZephyrYes" value="Yes">
+                  <label class="form-check-label" for="updateZephyrYes">Yes</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12 d-flex align-items-center">
+              <label class="me-3 mb-0 w-50">Report a defect automatically</label>
+              <div class="d-flex align-items-center gap-3">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="autoReportDefect" id="autoDefectNo" value="No" checked>
+                  <label class="form-check-label" for="autoDefectNo">No</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="autoReportDefect" id="autoDefectYes" value="Yes">
+                  <label class="form-check-label" for="autoDefectYes">Yes</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-3" id="progressContainer" style="display:none;">
+        <div class="progress">
+          <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" style="width:0%">0%</div>
+        </div>
+        <p id="estimatedTime">Estimated time to complete: 0s</p>
+        <p id="elapsedTime">Elapsed Time: 0s</p>
+        <p id="counters">Total: 0 | Executed: 0 | Passed: 0 | Failed: 0 | Skipped: 0</p>
+      </div>
+
+      <div id="customChecklistTable" class="mt-3 mb-3" style="display:none;">
+        <div class="mb-3">
+          <label for="excelFile" class="form-label">Upload Test Cases Excel File:</label>
+          <input type="file" id="excelFile" class="form-control" accept=".xlsx,.xls" />
+          <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="downloadSample">Download Sample Excel File</button>
+        </div>
+        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+          <table class="table table-bordered table-sm table-striped">
+            <thead class="sticky-top" style="background-color: #003366; color: white;">
+              <tr>
+                <th style="width: 5%; text-align: center;">#</th>
+                <th style="width: 12%; text-align: center;">Test case ID</th>
+                <th style="width: 48%; text-align: center;">Short Description</th>
+                <th style="width: 25%; text-align: center;">
+                  Module Name
+                  <select id="moduleFilter" class="form-select form-select-sm mt-1" style="width: 100%;">
+                    <option value="">All Modules</option>
+                  </select>
+                </th>
+                <th style="width: 5%; text-align: center;">Select</th>
+              </tr>
+            </thead>
+            <tbody id="testCasesTableBody">
+              <tr>
+                <td colspan="5" class="text-center text-muted">No test cases loaded. Please upload an Excel file.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </form>
+  </main>
+
+  <div class="my-3 text-center">
+    <button type="button" class="btn btn-success me-2" id="runBtn">Run Tests</button>
+    <button type="button" class="btn btn-danger" id="stopBtn" disabled>Stop Execution</button>
+  </div>
+
+  <footer class="text-center py-3 border-top mt-5 bg-light text-muted small">
+    <div>© <span id="currentYear">2025</span> LaunchIQ | Powered by Resulticks Automation</div>
+    <div>Version 1.0.0 | For internal use only</div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.js"></script>
+  <script>
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+    function updateMachineInfo() {
+      try {
+        const machineName = window.location.hostname || 'unknown-host';
+        const machineIp = 'N/A';
+        const now = new Date();
+        const dateTime = now.toLocaleString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).replace(',', '');
+        document.getElementById('machineInfo').textContent = `Machine: ${machineName} | IP: ${machineIp} | ${dateTime}`;
+      } catch (e) {
+        document.getElementById('machineInfo').textContent = 'Machine: Unknown | IP: N/A | ' + new Date().toLocaleString();
+      }
+    }
+    updateMachineInfo();
+    setInterval(updateMachineInfo, 1000);
+
+    const suiteEstimates = {
+      'Sample Test': 60,
+      'Daily Checklist': 900,
+      'Deployment Checklist': 1200,
+      'Smoke Checklist': 600,
+      'Regression (Default)': 7200,
+      'Account Setup': 300,
+      'Audience': 450,
+      'Preferences': 360,
+      'Custom Checklist': 600
+    };
+    function formatSeconds(s){ s=Number(s||0); const h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=Math.floor(s%60); if(h>0) return `${h}h ${m}m`; if(m>0) return `${m}m ${sec}s`; return `${sec}s`; }
+    function updateEstimate(){ const name=document.getElementById('suite').value; const secs=suiteEstimates[name]||0; document.getElementById('estimatedTime').textContent='Estimated time to complete: '+formatSeconds(secs); }
+
+    let runId=null;
+    document.getElementById('runBtn').addEventListener('click', async ()=>{
+      runId='run-'+Date.now();
+      document.getElementById('progressContainer').style.display='block';
+      document.getElementById('progressBar').style.width='0%';
+      document.getElementById('progressBar').textContent='0%';
+      document.getElementById('stopBtn').disabled=false;
+      console.log('Test run started:', runId);
+    });
+    document.getElementById('stopBtn').addEventListener('click', async ()=>{ if(!runId) return; console.log('Test run stopped:', runId); document.getElementById('stopBtn').disabled=true; });
+
+    let allTestCases=[]; let filteredTestCases=[]; const modules=['Account Setup','Preferences','Communication-SMS','Communication-WhatsApp','Communication-Email'];
+    function generateSampleExcel(){ const data=[]; data.push(['Module Name','Short Description','Test Case ID']); for(let i=1;i<=100;i++){ const module=modules[Math.floor(Math.random()*modules.length)]; const testCaseId=`TC_${String(i).padStart(4,'0')}`; const description=`Sample Test ${i} - ${module}`; data.push([module,description,testCaseId]); } const wb=XLSX.utils.book_new(); const ws=XLSX.utils.aoa_to_sheet(data); XLSX.utils.book_append_sheet(wb,ws,'Test Cases'); XLSX.writeFile(wb,'TestCases_Sample.xlsx'); }
+
+    function populateModuleFilter(){ const filterSelect=document.getElementById('moduleFilter'); const uniqueModules=[...new Set(allTestCases.map(tc=>tc.moduleName))].sort(); filterSelect.innerHTML='<option value="">All Modules</option>'; uniqueModules.forEach(module=>{ const option=document.createElement('option'); option.value=module; option.textContent=module; filterSelect.appendChild(option); }); }
+    function renderTable(testCases){ const tbody=document.getElementById('testCasesTableBody'); tbody.innerHTML=''; if(testCases.length===0){ tbody.innerHTML='<tr><td colspan="5" class="text-center text-muted">No test cases found.</td></tr>'; return; } testCases.forEach((tc,index)=>{ const tr=document.createElement('tr'); tr.innerHTML=`
+      <td style="text-align:center;">${tc.number}</td>
+      <td style="text-align:center;">${tc.testCaseId}</td>
+      <td style="word-wrap:break-word; white-space:normal;">${tc.shortDescription}</td>
+      <td>${tc.moduleName}</td>
+      <td class="text-center"><input type="checkbox" class="form-check-input test-case-checkbox" data-index="${index}" style="width:1.25rem; height:1.25rem; cursor:pointer; transform:scale(1.2); border-color:#0066cc; border-width:2px;" /></td>`; tbody.appendChild(tr); }); }
+    function filterTable(){ const selectedModule=document.getElementById('moduleFilter').value; if(selectedModule===''){ filteredTestCases=[...allTestCases]; } else { filteredTestCases=allTestCases.filter(tc=>tc.moduleName===selectedModule); } renderTable(filteredTestCases); }
+
+    function handleExcelUpload(event){ const file=event.target.files[0]; if(!file) return; const headerAliases={ moduleName:['module name','module'], shortDescription:['short description','objective','desc','description'], testCaseId:['test case id','test id','tc id','testcase id']}; function findIndex(headers, aliases){ const lower=headers.map(h=>(h||'').toString().trim().toLowerCase()); for(const a of aliases){ const idx=lower.indexOf(a); if(idx!==-1) return idx; } return -1; } const reader=new FileReader(); reader.onload=function(e){ try{ const data=new Uint8Array(e.target.result); const workbook=XLSX.read(data,{type:'array'}); const collected=[]; let seq=1; workbook.SheetNames.forEach(sheetName=>{ const ws=workbook.Sheets[sheetName]; if(!ws) return; const rows=XLSX.utils.sheet_to_json(ws,{header:1, defval:''}); if(!rows||rows.length<2) return; const headers=rows[0]; const idxModule=findIndex(headers, headerAliases.moduleName); const idxShort=findIndex(headers, headerAliases.shortDescription); const idxId=findIndex(headers, headerAliases.testCaseId); if(idxModule===-1 || idxId===-1) return; for(let r=1;r<rows.length;r++){ const row=rows[r]; const moduleName=(row[idxModule]||'').toString().trim(); const testCaseId=(row[idxId]||'').toString().trim(); const shortDescription=idxShort!==-1?(row[idxShort]||'').toString().trim():''; if(!testCaseId && !moduleName && !shortDescription) continue; collected.push({ number: seq++, testCaseId, shortDescription, moduleName }); } }); if(collected.length===0){ alert('No test cases found. Ensure headers include: "Module Name", "Short Description" (or "Objective"), and "Test Case ID".'); return; } allTestCases=collected; populateModuleFilter(); filteredTestCases=[...allTestCases]; renderTable(filteredTestCases); } catch(error){ alert('Error reading Excel file: '+error.message); } }; reader.readAsArrayBuffer(file); }
+
+    function toggleCustomChecklistTable(){ const suite=document.getElementById('suite').value; const table=document.getElementById('customChecklistTable'); table.style.display = (suite==='Custom Checklist') ? 'block' : 'none'; }
+    function updateUrlFromEnvironment(){ const environment=document.getElementById('environment').value; const urlField=document.getElementById('url'); const urlMap={ 'RUN19':'https://run19.resulticks.com/', 'RUN':'https://run.resulticks.com/', 'QA':'https://reacuix.resul.io/', 'Development':'https://dev.resul.team/' }; urlField.value=urlMap[environment]||''; }
+
+    document.getElementById('environment').addEventListener('change', updateUrlFromEnvironment); updateUrlFromEnvironment();
+    document.getElementById('suite').addEventListener('change', function(){ updateEstimate(); toggleCustomChecklistTable(); }); updateEstimate(); toggleCustomChecklistTable();
+    document.getElementById('excelFile').addEventListener('change', handleExcelUpload);
+    document.getElementById('downloadSample').addEventListener('click', generateSampleExcel);
+    document.getElementById('moduleFilter').addEventListener('change', filterTable);
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LaunchIQ - Launcher</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="border-bottom bg-white shadow-sm sticky-top">
+    <div class="d-flex justify-content-between align-items-center px-4 py-2 position-relative">
+      <div class="d-flex align-items-center">
+        <img src="images/RESUL-logo-bl.jpg" alt="Resulticks" height="50" />
+      </div>
+      <div class="position-absolute start-50 translate-middle-x text-center">
+        <span class="h4 mb-0">LaunchIQ</span>
+      </div>
+      <div class="d-flex align-items-center">
+        <span class="me-3 small">Version <strong>1.0.0</strong></span>
+        <img src="images/resul-prod-logo.png" alt="Product" height="50" />
+      </div>
+    </div>
+    <div class="px-4 py-1 small text-muted border-top">
+      <span id="machineInfo">Machine: Loading... | IP: Loading... | Loading...</span>
+    </div>
+  </header>
+
+  <main class="container mt-4">
+    <h1 class="visually-hidden">Launcher</h1>
+    <form id="launchForm">
+      <div class="row">
+        <div class="col-12 col-lg-4">
+          <div class="row mb-3">
+            <div class="col-12 d-flex align-items-center">
+              <label for="product" class="me-3 mb-0 w-25">Product</label>
+              <select id="product" class="form-select w-auto" style="min-width: 240px;">
+                <option>Resul</option>
+                <option>Marketing Star</option>
+                <option>Smart DX</option>
+                <option>Reacher</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12 d-flex align-items-center">
+              <label for="environment" class="me-3 mb-0 w-25">Environment</label>
+              <select id="environment" class="form-select w-auto" style="min-width: 240px;">
+                <option>Development</option>
+                <option>QA</option>
+                <option>RUN19</option>
+                <option>RUN</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12 d-flex align-items-center">
+              <label for="suite" class="me-3 mb-0 w-25">Test Suite</label>
+              <select id="suite" class="form-select w-auto" style="min-width: 240px;">
+                <option>Sample Test</option>
+                <option>Daily Checklist</option>
+                <option>Deployment Checklist</option>
+                <option>Smoke Checklist</option>
+                <option selected>Regression (Default)</option>
+                <option>Account Setup</option>
+                <option>Audience</option>
+                <option>Preferences</option>
+                <option>Custom Checklist</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+          <div class="row mb-3">
+            <div class="col-12 d-flex align-items-center">
+              <label for="url" class="me-3 mb-0 w-25">URL</label>
+              <input id="url" class="form-control w-auto" style="min-width: 240px;" placeholder="URL" readonly />
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12 d-flex align-items-center">
+              <label for="username" class="me-3 mb-0 w-25">User Name</label>
+              <input id="username" class="form-control w-auto" style="min-width: 240px;" placeholder="User Name" />
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12 d-flex align-items-center">
+              <label for="password" class="me-3 mb-0 w-25">Password</label>
+              <input id="password" type="password" class="form-control w-auto" style="min-width: 240px;" placeholder="Password" />
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+          <div class="row mb-3">
+            <div class="col-12 d-flex align-items-center">
+              <label for="runAt" class="me-3 mb-0 w-50">Run At</label>
+              <select id="runAt" class="form-select w-auto" style="min-width: 200px;">
+                <option selected>Local</option>
+                <option>Lambda</option>
+                <option>BrowserStack</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12 d-flex align-items-center">
+              <label class="me-3 mb-0 w-50">Update the Zephyr</label>
+              <div class="d-flex align-items-center gap-3">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="updateZephyr" id="updateZephyrNo" value="No" checked>
+                  <label class="form-check-label" for="updateZephyrNo">No</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="updateZephyr" id="updateZephyrYes" value="Yes">
+                  <label class="form-check-label" for="updateZephyrYes">Yes</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12 d-flex align-items-center">
+              <label class="me-3 mb-0 w-50">Report a defect automatically</label>
+              <div class="d-flex align-items-center gap-3">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="autoReportDefect" id="autoDefectNo" value="No" checked>
+                  <label class="form-check-label" for="autoDefectNo">No</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="autoReportDefect" id="autoDefectYes" value="Yes">
+                  <label class="form-check-label" for="autoDefectYes">Yes</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-3" id="progressContainer" style="display:none;">
+        <div class="progress">
+          <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" style="width:0%">0%</div>
+        </div>
+        <p id="estimatedTime">Estimated time to complete: 0s</p>
+        <p id="elapsedTime">Elapsed Time: 0s</p>
+        <p id="counters">Total: 0 | Executed: 0 | Passed: 0 | Failed: 0 | Skipped: 0</p>
+      </div>
+
+      <div id="customChecklistTable" class="mt-3 mb-3" style="display:none;">
+        <div class="mb-3">
+          <label for="excelFile" class="form-label">Upload Test Cases Excel File:</label>
+          <input type="file" id="excelFile" class="form-control" accept=".xlsx,.xls" />
+          <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="downloadSample">Download Sample Excel File</button>
+        </div>
+        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+          <table class="table table-bordered table-sm table-striped">
+            <thead class="sticky-top" style="background-color: #003366; color: white;">
+              <tr>
+                <th style="width: 5%; text-align: center;">#</th>
+                <th style="width: 12%; text-align: center;">Test case ID</th>
+                <th style="width: 48%; text-align: center;">Short Description</th>
+                <th style="width: 25%; text-align: center;">
+                  Module Name
+                  <select id="moduleFilter" class="form-select form-select-sm mt-1" style="width: 100%;">
+                    <option value="">All Modules</option>
+                  </select>
+                </th>
+                <th style="width: 5%; text-align: center;">Select</th>
+              </tr>
+            </thead>
+            <tbody id="testCasesTableBody">
+              <tr>
+                <td colspan="5" class="text-center text-muted">No test cases loaded. Please upload an Excel file.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </form>
+  </main>
+
+  <div class="my-3 text-center">
+    <button type="button" class="btn btn-success me-2" id="runBtn">Run Tests</button>
+    <button type="button" class="btn btn-danger" id="stopBtn" disabled>Stop Execution</button>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center py-3 border-top mt-5 bg-light text-muted small">
+    <div>© <span id="currentYear">2025</span> LaunchIQ | Powered by Resulticks Automation</div>
+    <div>Version 1.0.0 | For internal use only</div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.js"></script>
+  <script>
+    // Update current year
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Update machine info
+    function updateMachineInfo() {
+      try {
+        const machineName = window.location.hostname || 'unknown-host';
+        const machineIp = 'N/A'; // Cannot get IP from browser directly
+        const now = new Date();
+        const dateTime = now.toLocaleString('en-US', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        }).replace(',', '');
+        document.getElementById('machineInfo').textContent = `Machine: ${machineName} | IP: ${machineIp} | ${dateTime}`;
+      } catch (e) {
+        document.getElementById('machineInfo').textContent = 'Machine: Unknown | IP: N/A | ' + new Date().toLocaleString();
+      }
+    }
+    updateMachineInfo();
+    setInterval(updateMachineInfo, 1000);
+
+    // Suite estimates (client-side)
+    const suiteEstimates = {
+      'Sample Test': 60,
+      'Daily Checklist': 900,
+      'Deployment Checklist': 1200,
+      'Smoke Checklist': 600,
+      'Regression (Default)': 7200,
+      'Account Setup': 300,
+      'Audience': 450,
+      'Preferences': 360,
+      'Custom Checklist': 600
+    };
+
+    function formatSeconds(s) {
+      s = Number(s || 0);
+      const h = Math.floor(s / 3600);
+      const m = Math.floor((s % 3600) / 60);
+      const sec = Math.floor(s % 60);
+      if (h > 0) return `${h}h ${m}m`;
+      if (m > 0) return `${m}m ${sec}s`;
+      return `${sec}s`;
+    }
+
+    function updateEstimate() {
+      const name = document.getElementById('suite').value;
+      const secs = suiteEstimates[name] || 0;
+      document.getElementById('estimatedTime').textContent = 'Estimated time to complete: ' + formatSeconds(secs);
+    }
+
+    let runId = null;
+    document.getElementById('runBtn').addEventListener('click', async () => {
+      runId = 'run-' + Date.now();
+      document.getElementById('progressContainer').style.display = 'block';
+      document.getElementById('progressBar').style.width = '0%';
+      document.getElementById('progressBar').textContent = '0%';
+      document.getElementById('stopBtn').disabled = false;
+      // Note: API calls won't work on GitHub Pages without backend
+      console.log('Test run started:', runId);
+      // pollProgress();
+    });
+
+    document.getElementById('stopBtn').addEventListener('click', async () => {
+      if (!runId) return;
+      console.log('Test run stopped:', runId);
+      document.getElementById('stopBtn').disabled = true;
+    });
+
+    let allTestCases = [];
+    let filteredTestCases = [];
+    const modules = ['Account Setup', 'Preferences', 'Communication-SMS', 'Communication-WhatsApp', 'Communication-Email'];
+
+    function generateSampleExcel() {
+      const data = [];
+      data.push(['#', 'Test case ID', 'Short Description', 'Module Name']);
+      for (let i = 1; i <= 100; i++) {
+        const module = modules[Math.floor(Math.random() * modules.length)];
+        const testCaseId = `TC_${String(i).padStart(4, '0')}`;
+        const description = `Test Case ${i} - ${module}`;
+        data.push([i, testCaseId, description, module]);
+      }
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.aoa_to_sheet(data);
+      XLSX.utils.book_append_sheet(wb, ws, 'Test Cases');
+      XLSX.writeFile(wb, 'TestCases_Sample.xlsx');
+    }
+
+    function populateModuleFilter() {
+      const filterSelect = document.getElementById('moduleFilter');
+      const uniqueModules = [...new Set(allTestCases.map(tc => tc.moduleName))].sort();
+      filterSelect.innerHTML = '<option value="">All Modules</option>';
+      uniqueModules.forEach(module => {
+        const option = document.createElement('option');
+        option.value = module;
+        option.textContent = module;
+        filterSelect.appendChild(option);
+      });
+    }
+
+    function renderTable(testCases) {
+      const tbody = document.getElementById('testCasesTableBody');
+      tbody.innerHTML = '';
+      if (testCases.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No test cases found.</td></tr>';
+        return;
+      }
+      testCases.forEach((tc, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="text-align: center;">${tc.number}</td>
+          <td style="text-align: center;">${tc.testCaseId}</td>
+          <td style="word-wrap: break-word; white-space: normal;">${tc.shortDescription}</td>
+          <td>${tc.moduleName}</td>
+          <td class="text-center">
+            <input type="checkbox" class="form-check-input test-case-checkbox" data-index="${index}" style="width: 1.25rem; height: 1.25rem; cursor: pointer; transform: scale(1.2); border-color: #0066cc; border-width: 2px;" />
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterTable() {
+      const selectedModule = document.getElementById('moduleFilter').value;
+      if (selectedModule === '') {
+        filteredTestCases = [...allTestCases];
+      } else {
+        filteredTestCases = allTestCases.filter(tc => tc.moduleName === selectedModule);
+      }
+      renderTable(filteredTestCases);
+    }
+
+    function handleExcelUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+          const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+          if (jsonData.length < 2) {
+            alert('Excel file must have at least a header row and one data row.');
+            return;
+          }
+          allTestCases = [];
+          for (let i = 1; i < jsonData.length; i++) {
+            const row = jsonData[i];
+            if (row.length >= 4 && row[0] && row[1]) {
+              allTestCases.push({
+                number: row[0],
+                testCaseId: row[1],
+                shortDescription: row[2] || '',
+                moduleName: row[3] || ''
+              });
+            }
+          }
+          populateModuleFilter();
+          filteredTestCases = [...allTestCases];
+          renderTable(filteredTestCases);
+        } catch (error) {
+          alert('Error reading Excel file: ' + error.message);
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function toggleCustomChecklistTable() {
+      const suite = document.getElementById('suite').value;
+      const table = document.getElementById('customChecklistTable');
+      if (suite === 'Custom Checklist') {
+        table.style.display = 'block';
+      } else {
+        table.style.display = 'none';
+      }
+    }
+
+    function updateUrlFromEnvironment() {
+      const environment = document.getElementById('environment').value;
+      const urlField = document.getElementById('url');
+      const urlMap = {
+        'RUN19': 'https://run19.resulticks.com/',
+        'RUN': 'https://run.resulticks.com/',
+        'QA': 'https://reacuix.resul.io/',
+        'Development': 'https://dev.resul.team/'
+      };
+      urlField.value = urlMap[environment] || '';
+    }
+
+    // Initialize
+    document.getElementById('environment').addEventListener('change', updateUrlFromEnvironment);
+    updateUrlFromEnvironment();
+
+    document.getElementById('suite').addEventListener('change', function() {
+      updateEstimate();
+      toggleCustomChecklistTable();
+    });
+    updateEstimate();
+    toggleCustomChecklistTable();
+
+    document.getElementById('excelFile').addEventListener('change', handleExcelUpload);
+    document.getElementById('downloadSample').addEventListener('click', generateSampleExcel);
+    document.getElementById('moduleFilter').addEventListener('change', filterTable);
+
+    async function pollProgress() {
+      if (!runId) return;
+      // Note: This requires backend API which won't work on GitHub Pages
+      // const res = await fetch('/api/progress?runId=' + runId);
+      // const data = await res.json();
+      // Update progress UI...
+    }
+  </script>
+</body>
+</html>
+
+

@@ -2,6 +2,7 @@
 package com.launchiq.service;
 
 import org.springframework.stereotype.Service;
+import com.launchiq.config.RepoConfig;
 import org.testng.TestNG;
 
 import java.time.Instant;
@@ -18,6 +19,14 @@ public class ExecutionService {
     private final Map<String, AtomicBoolean> stopFlags = new ConcurrentHashMap<>();
     private final Map<String, Instant> startTimes = new ConcurrentHashMap<>();
 
+    private final RepoRunnerService repoRunnerService;
+    private final RepoConfig repoConfig;
+
+    public ExecutionService(RepoRunnerService repoRunnerService, RepoConfig repoConfig) {
+        this.repoRunnerService = repoRunnerService;
+        this.repoConfig = repoConfig;
+    }
+
     public void startRun(String runId, String suiteXmlPath, Map<String,String> systemProps) {
         progressMap.put(runId, 0);
         statusMap.put(runId, "RUNNING");
@@ -27,14 +36,19 @@ public class ExecutionService {
 
         new Thread(() -> {
             try {
-                TestNG testng = new TestNG(false);
-                List<String> suites = new ArrayList<>();
-                suites.add(suiteXmlPath);
-                testng.setTestSuites(suites);
-                LiveTestListener listener = new LiveTestListener(runId, this);
-                testng.addListener((Object) listener);
-                if (systemProps != null) systemProps.forEach(System::setProperty);
-                testng.run();
+                if (repoConfig.isEnabled()) {
+                    // External repo driven execution via Maven
+                    repoRunnerService.runExternalMavenSuite(runId);
+                } else {
+                    TestNG testng = new TestNG(false);
+                    List<String> suites = new ArrayList<>();
+                    suites.add(suiteXmlPath);
+                    testng.setTestSuites(suites);
+                    LiveTestListener listener = new LiveTestListener(runId, this);
+                    testng.addListener((Object) listener);
+                    if (systemProps != null) systemProps.forEach(System::setProperty);
+                    testng.run();
+                }
 
                 Map<String,Integer> c = counters.getOrDefault(runId, new HashMap<>());
                 int passed = c.getOrDefault("passed", 0);
