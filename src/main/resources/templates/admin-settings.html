@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Admin Settings</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"></head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div class="container mt-4">
+  <h3>Admin Settings</h3>
+  <div th:if="${param.saved != null}" class="alert alert-success">Saved</div>
+  <form method="post" action="/admin/cloud/save" class="mb-4">
+    <h5>Cloud Provider</h5>
+    <div class="row">
+      <div class="col"><label>Provider</label><input name="provider" class="form-control" value="LambdaTest"/></div>
+      <div class="col"><label>Username</label><input name="username" class="form-control"/></div>
+      <div class="col"><label>Access Key</label><input name="accessKey" class="form-control"/></div>
+      <div class="col"><label>Grid URL</label><input name="gridUrl" class="form-control"/></div>
+    </div>
+    <button class="btn btn-primary mt-2">Save Cloud Settings</button>
+  </form>
+  <form method="post" action="/admin/email/save" class="mb-4">
+    <h5>SMTP Settings</h5>
+    <div class="row">
+      <div class="col"><label>Host</label><input name="host" class="form-control" value="smtp.example.com"/></div>
+      <div class="col"><label>Port</label><input name="port" class="form-control" value="587"/></div>
+      <div class="col"><label>Username</label><input name="username" class="form-control"/></div>
+      <div class="col"><label>Password</label><input name="password" class="form-control" type="password"/></div>
+    </div>
+    <button class="btn btn-primary mt-2">Save Email Settings</button>
+  </form>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body></html>

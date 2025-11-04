@@ -1,0 +1,8 @@
+com\launchiq\service\ExecutionService.class
+com\launchiq\service\LiveTestListener.class
+com\launchiq\config\StartupRunner.class
+com\launchiq\controller\ApiController.class
+com\launchiq\service\DBHelper.class
+com\launchiq\util\AESEncryption.class
+com\launchiq\LaunchIQApplication.class
+com\launchiq\util\WebDriverFactory.class

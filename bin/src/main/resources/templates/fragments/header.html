@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<header th:fragment="header" class="border-bottom bg-white shadow-sm sticky-top">
+  <div class="d-flex justify-content-between align-items-center px-4 py-2 position-relative">
+  <div class="d-flex align-items-center">
+    <img src="/images/RESUL-logo-bl.jpg" alt="Resulticks" height="50"/>
+    </div>
+    <div class="position-absolute start-50 translate-middle-x text-center">
+      <span class="h4 mb-0">LaunchIQ</span>
+  </div>
+  <div class="d-flex align-items-center">
+    <span class="me-3 small">Version <strong th:text="${appVersion}">1.0.0</strong></span>
+    <div th:if="${loggedInUser != null}" class="dropdown me-3">
+      <a class="dropdown-toggle text-decoration-none" href="#" role="button" data-bs-toggle="dropdown">
+        <span th:text="${loggedInUser}">Admin</span>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li><a class="dropdown-item" href="/admin/settings">Settings</a></li>
+        <li><a class="dropdown-item" href="/logout">Logout</a></li>
+      </ul>
+    </div>
+    <img src="/images/resul-prod-logo.png" alt="Product" height="50"/>
+    </div>
+  </div>
+  <div class="px-4 py-1 small text-muted border-top">
+    <span th:text="${'Machine: ' + (machineName?:'unknown-host') + ' | IP: ' + (machineIp?:'0.0.0.0') + ' | ' + (nowDateTime?:'')}">Machine info</span>
+  </div>
+</header>
+</body>
+</html>
