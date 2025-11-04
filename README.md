@@ -1,4 +1,3 @@
-
 LaunchIQ - Windows-targeted Test Automation Launcher (with WebDriverManager)
 
 This package is optimized for Windows and uses WebDriverManager so you don't need to manage chromedriver manually.
@@ -15,3 +14,6 @@ How to run:
 Notes:
 - The database will be created at C:\LaunchIQ\data\launchiq_windows.db by default (ensure the path is writable).
 - To change paths or AES key, edit application.properties or pass -D overrides in the .bat file.
+=======
+# LaunchIQ
+Automation LaunchIQ Launcher
